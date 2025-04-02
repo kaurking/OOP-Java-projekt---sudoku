@@ -8,7 +8,7 @@ public class LauaGeneraator {
         return fullBoard;
     }
 
-    private static SudokuLaud generateFullBoard() {}
+    private static SudokuLaud generateFullBoard() {return null;}
 
     private static void removeCells(SudokuLaud laud, int mitteEemaldatudNumbrid) {}
 
