@@ -53,6 +53,7 @@ public class SudokuLaud {
         }
     }
 
+    // Tagastab lauas tühjade lahtride arvu
     public int getNullideArv() {
         int nullideArv = 0;
 

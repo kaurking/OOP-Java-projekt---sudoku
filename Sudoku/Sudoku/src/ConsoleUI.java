@@ -31,6 +31,26 @@ public class ConsoleUI {
         }
     }
 
+    public int getRaskusTase() {
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Sisesta, mitme täidetud ruuduga sudokut soovid:");
+
+        String input = myObj.nextLine();
+
+        int ruutudeArv = Integer.parseInt(input);
+
+        if (ruutudeArv > 81) {
+            System.out.println("Viga! Täidetud ruute ei saa olla rohkem kui 81.");
+            return getRaskusTase();
+        } else if (ruutudeArv <= 17) {
+            System.out.println("Viga! Alla 17 täidetud ruuduga sudoku ei ole lahendatav.");
+            return getRaskusTase();
+        }
+
+        return 81 - ruutudeArv;
+
+    }
+
     // võtab kasutajalt terminalis uude ruutu väärtuse. x kordinaat, y kordinaat ja sisestatud number ehk nt: 2 3 5
     public int[] getKasutajaLiigutus() {
         Scanner myObj = new Scanner(System.in);

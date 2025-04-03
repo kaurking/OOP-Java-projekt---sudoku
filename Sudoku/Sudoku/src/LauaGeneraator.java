@@ -1,18 +1,17 @@
 public class LauaGeneraator {
 
-    // mitteEemaldatudNumbrid nagu raskustase, mida rohkem jätad alles numbreid, seda lihtsam on
-    // Genereerid alguses valiidse laua ja siis eemaldad numbreid, Siis peab kontrollima, kas on lahendatav?
+    // Tagastab nõutud arvu tühjade ruutudega lahendatava sudoku
     public static SudokuLaud generate(int eemaldatudNumbrid) {
-        SudokuLaud taidetudLaud = generateFullBoard();
-        SudokuLaud poolikLaud = removeCells(taidetudLaud, eemaldatudNumbrid);
+        SudokuLaud taidetudLaud = genereeriTaielikLaud();
+        SudokuLaud poolikLaud = kustutaRuudud(taidetudLaud, eemaldatudNumbrid);
 
         return poolikLaud;
     }
 
-    private static SudokuLaud generateFullBoard() {
+    private static SudokuLaud genereeriTaielikLaud() {
         SudokuLaud laud = new SudokuLaud();
 
-        // Aluseks võetakse korrektne sudoku ruudustik, sest selle ridu, veergusi ja elemente vahetades on võimalik
+        // Aluseks võetakse korrektne sudoku ruudustik, sest selle ridu ja veergusi suvaliselt vahetades on võimalik
         // genereerida täiesti teine, kuid ikkagi reeglitele vastav sudoku
         int[] ruutudeAlgVaartused = {
                 3, 1, 9,   4, 2, 7,   5, 8, 6,
@@ -32,7 +31,7 @@ public class LauaGeneraator {
                 laud.getRuut(rida, veerg).setValue(ruutudeAlgVaartused[rida * 9 + veerg]);
         }
 
-        // Vahetame iga numbri (1-9) positsioonid sudokus mõne muu, suvalise numbri positsioonidega
+        // Iga numbri positsioonide vahetamine mõne muu, suvalise numbri positsioonidega
         for (int arv = 1; arv < 10; arv++) {
             int juhuArv = (int) (Math.random() * 9 + 1);
             for (int rida = 0; rida < 9; rida++) {
@@ -95,13 +94,14 @@ public class LauaGeneraator {
                 }
             }
         }
-
         return laud;
+
     }
 
     // Tagastab, kas antud sudoku on täpselt ühe lahendusega
     private static boolean onYheLahendusega(SudokuLaud laud) {
         return leiaLahendus(laud.copyOf()).isComplete(false);
+
     }
 
     // Rekursiivselt sudoku lahendamine
@@ -111,31 +111,31 @@ public class LauaGeneraator {
         boolean yksLahendus = false; // kas on juba leitud üks lahendus
         SudokuLaud esimeneLahendus = laud.copyOf();
 
-        // Sudoku lahendamine
+        // Läbime sudokulaua ruuduhaaval, otsides tühje ruute
         for (int rida = 0; rida < 9; rida ++) {
             for (int veerg = 0; veerg < 9; veerg++) {
                 if (laud.getRuut(rida, veerg).getValue() == 0) {
-                    for (int arv = 1; arv < 10; arv++){
 
-                        // Arvude 1-9 proovimine tühjades lahtrites
+                    // Arvude 1-9 proovimine tühjas ruudus
+                    for (int arv = 1; arv < 10; arv++){
                         laud.getRuut(rida, veerg).setValue(arv);
 
-                        // Kontrollime, kas arv sobib lahtrisse
+                        // Kontrollime, kas arv sobib ruutu
                         if (laud.isComplete(true)) {
 
-                            // Kui arv sobib, otsitakse rekursiivselt järgmisesse lahtrisse sobivat arvu
+                            // Kui arv sobib, otsitakse rekursiivselt järgmisesse ruutu sobivat arvu
                             SudokuLaud genereeritudLaud = leiaLahendus(laud).copyOf();
 
-                            if(genereeritudLaud.isComplete(true)) {
+                            if(genereeritudLaud.isComplete(false)) {
 
                                 if (!yksLahendus) {
                                     // Lahenduse leidmisel salvestatakse see ja märgitakse, et üks lahendus on leitud
                                     yksLahendus = true;
                                     esimeneLahendus = genereeritudLaud.copyOf();
                                 } else {
-                                    // Teise lahenduse leidmisel muudetakse esimene lahter 0-ks, sest
-                                    // siis on genereeritudLaud.isComplete() eelmises rekursioonis alati väär
+                                    // Teise lahenduse leidmisel tagastatakse sudoku, mis ei ole lahendatud
                                     laud.getRuut(0, 0).setValue(0);
+                                    laud.getRuut(1, 0).setValue(0);
                                     return laud;
                                 }
 
@@ -149,34 +149,58 @@ public class LauaGeneraator {
                 }
             }
         }
-        // Kui lahendust ei leitud, tagastatakse laud, mis ei saa olla reeglitele vastav
-        return esimeneLahendus;
+        // Kui lahendust ei leitud, tagastatakse algne laud
+        return laud;
 
     }
 
-    // Antud sudokust etteantud koguse lahtrite kustutamine, et luua lahendatav sudoku
-    private static SudokuLaud removeCells(SudokuLaud laud, int eemaldatudNumbrid) {
+    // Antud sudokust etteantud koguse ruutude kustutamine, et luua lahendatav sudoku
+    private static SudokuLaud kustutaRuudud(SudokuLaud laud, int eemaldatudNumbrid) {
 
         // Võib tekkida probleem, kui pärast mingi hulga lahtrite kustutamist ei saa enam
         // ühtegi lahtrit rohkem kustutada, kuid numbritega lahtreid on ikka liiga palju.
         // Kas genereerida kuidagi uus sudoku ja proovida sellega või proovida sama sudo-
         // kuga edasi, alustades täiesti algusest?
 
+
+        // tagastab, et on ühe lahendusega, kuigi ei ole??
+        //SudokuLaud laud2 = new SudokuLaud();
+//
+        //int[] ruutudeAlgVaartused = {
+        //        0, 0, 3, 7, 1, 5, 8, 0, 2,
+        //        0, 4, 5, 0, 0, 6, 0, 0, 0,
+        //        0, 0, 7, 0, 0, 2, 0, 0, 0,
+        //        6, 7, 4, 0, 5, 0, 0, 1, 0,
+        //        1, 0, 0, 0, 0, 0, 4, 5, 0,
+        //        0, 0, 8, 0, 0, 0, 0, 0, 6,
+        //        0, 0, 0, 5, 0, 1, 0, 8, 0,
+        //        4, 3, 0, 8, 0, 0, 0, 0, 9,
+        //        0, 0, 0, 2, 0, 0, 1, 0, 0};
+//
+        //for (int rida = 0; rida < 9; rida++) {
+        //    for (int veerg = 0; veerg < 9; veerg++ )
+        //        laud2.getRuut(rida, veerg).setValue(ruutudeAlgVaartused[rida * 9 + veerg]);
+        //}
+//
+        //System.out.println("Kas testlaud on ühe lahendusega?");
+        //System.out.println(onYheLahendusega(laud2));
+
+
             while (laud.getNullideArv() < eemaldatudNumbrid) {
 
                 SudokuLaud eelnevSeis = laud.copyOf();
 
-                // Valime suvalise lahtri, mida kustutada
+                // Valime suvalise ruudu, mida kustutada
                 int suvalineRida = (int) (Math.random() * 9);
                 int suvalineVeerg = (int) (Math.random() * 9);
                 if (laud.getRuut(suvalineRida, suvalineVeerg).getValue() != 0) {
                     laud.getRuut(suvalineRida, suvalineVeerg).setValue(0);
                 }
 
-                // Kui lahtri kustutamine tegi sudoku võimatuks, proovitakse mõnda teist lahtrit kustutada
+                // Kui ruudu kustutamine tegi sudoku võimatuks, proovitakse mõnda teist ruutu kustutada
                 while (!onYheLahendusega(laud)) {
 
-                    // Laua lahtrite taastamine samasse seisu, mis oli enne lahtri kustutamist
+                    // Laua taastamine samasse seisu, mis oli enne ruudu kustutamist
                     laud = eelnevSeis.copyOf();
 
                     suvalineRida = (int) (Math.random() * 8);
@@ -188,7 +212,7 @@ public class LauaGeneraator {
                 }
             }
 
-        // Määrame sudoku 'vihjetele' isFixed, et kasutaja ei saaks neid muuta
+        // Sudoku 'vihjetele' isFixed määramine, et kasutaja ei saaks neid ruute muuta
         for (int rida = 0; rida < 9; rida++) {
             for (int veerg = 0; veerg < 9; veerg++) {
                 if (laud.getRuut(rida, veerg).getValue() != 0) {

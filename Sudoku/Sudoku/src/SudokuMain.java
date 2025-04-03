@@ -5,9 +5,10 @@ public class SudokuMain {
     public void playGame() {
 
         // Vaja lisada veel raskustaseme valik, hetkel genereerib iga sudoku 20 kustutatud lahtriga
-        SudokuLaud laud = LauaGeneraator.generate(30);
 
         ConsoleUI UI = new ConsoleUI();
+
+        SudokuLaud laud = LauaGeneraator.generate(UI.getRaskusTase());
 
         while (true) {
 
