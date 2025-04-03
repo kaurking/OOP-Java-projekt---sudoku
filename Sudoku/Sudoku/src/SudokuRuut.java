@@ -20,5 +20,9 @@ public class SudokuRuut {
         this.value = value;
     }
 
+    public void setIsFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
 
 }

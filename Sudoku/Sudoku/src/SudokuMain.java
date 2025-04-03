@@ -4,15 +4,8 @@ public class SudokuMain {
 
     public void playGame() {
 
-        // testlaud, kus on kõik nullid, hiljem LauaGeneraator klassis peaks laua genereerima.
-        SudokuRuut[][] testlaud = new SudokuRuut[9][9];
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                testlaud[r][c] = new SudokuRuut(0, false); // kõik on tühjad ja saab editida
-            }
-        }
-        SudokuLaud laud = new SudokuLaud(testlaud);
-        // end
+        // Vaja lisada veel raskustaseme valik, hetkel genereerib iga sudoku 20 kustutatud lahtriga
+        SudokuLaud laud = LauaGeneraator.generate(30);
 
         ConsoleUI UI = new ConsoleUI();
 
@@ -26,7 +19,7 @@ public class SudokuMain {
 
             // lisab lauale sisendi
             if (laud.makeMove(sisend[0], sisend[1], sisend[2])) {
-                if (laud.isComplete()) {
+                if (laud.isComplete(false)) {
                     UI.printBoard(laud);
                     System.out.println("Palju õnne! Lahendasid sudoku!");
                     break;
