@@ -2,9 +2,9 @@ public class SudokuLaud {
 
     private SudokuRuut[][] laud;
 
-    public SudokuLaud(SudokuRuut[][] laud) {
-        this.laud = laud;
-    }
+    //public SudokuLaud(SudokuRuut[][] laud) {
+    //    this.laud = laud;
+    //}
 
     // Ilma argumentideta konstruktor loob ise tühja sudokulaua
     public SudokuLaud() {
@@ -34,10 +34,6 @@ public class SudokuLaud {
 
     public SudokuRuut getRuut(int rida, int veerg) {
         return laud[rida][veerg];
-    }
-
-    public SudokuRuut[][] getRuudustik() {
-        return laud;
     }
 
     public boolean makeMove(int rida, int veerg, int value) {

@@ -1,5 +1,3 @@
-import java.io.Console;
-
 public class LauaGeneraator {
 
     // mitteEemaldatudNumbrid nagu raskustase, mida rohkem jätad alles numbreid, seda lihtsam on
@@ -56,7 +54,7 @@ public class LauaGeneraator {
                 int juhuArv = (int) (Math.random() * 3);
                 for (int veeruNumber = 0; veeruNumber < 9; veeruNumber++) {
                     ajutine = laud.getRuut(plokiNumber * 3 + juhuArv, veeruNumber).getValue();
-                    laud.getRuut(plokiNumber * 3 + juhuArv, veeruNumber).setValue(laud.getRuut(plokiNumber * 3 + kordusteArv, veeruNumber).getValue()); ;
+                    laud.getRuut(plokiNumber * 3 + juhuArv, veeruNumber).setValue(laud.getRuut(plokiNumber * 3 + kordusteArv, veeruNumber).getValue());
                     laud.getRuut(plokiNumber * 3 + kordusteArv, veeruNumber).setValue(ajutine);
                 }
             }
@@ -92,7 +90,7 @@ public class LauaGeneraator {
             for (int veeruNumber = 0; veeruNumber < 3; veeruNumber++) {
                 for (int reaNumber = 0; reaNumber < 9; reaNumber++) {
                     ajutine = laud.getRuut(reaNumber, plokiVeeruNumber * 3 + veeruNumber).getValue();
-                    laud.getRuut(reaNumber, plokiVeeruNumber * 3 + veeruNumber).setValue(laud.getRuut(reaNumber, juhuArv * 3 + veeruNumber).getValue());;
+                    laud.getRuut(reaNumber, plokiVeeruNumber * 3 + veeruNumber).setValue(laud.getRuut(reaNumber, juhuArv * 3 + veeruNumber).getValue());
                     laud.getRuut(reaNumber, juhuArv * 3 + veeruNumber).setValue(ajutine);
                 }
             }
