@@ -39,10 +39,10 @@ public class ConsoleUI {
 
         int ruutudeArv = Integer.parseInt(input);
 
-        if (ruutudeArv > 81) {
-            System.out.println("Viga! Täidetud ruute ei saa olla rohkem kui 81.");
+        if (ruutudeArv > 80) {
+            System.out.println("Viga! Täidetud ruute ei saa olla rohkem kui 80.");
             return getRaskusTase();
-        } else if (ruutudeArv <= 17) {
+        } else if (ruutudeArv < 17) {
             System.out.println("Viga! Alla 17 täidetud ruuduga sudoku ei ole lahendatav.");
             return getRaskusTase();
         }
