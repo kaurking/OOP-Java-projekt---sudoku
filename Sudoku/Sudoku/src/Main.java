@@ -4,8 +4,6 @@ public class Main {
 
         SudokuMain mäng = new SudokuMain();
         mäng.playGame();
-
-
+        
     }
-
 }

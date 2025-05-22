@@ -24,5 +24,4 @@ public class SudokuRuut {
         this.isFixed = isFixed;
     }
 
-
 }

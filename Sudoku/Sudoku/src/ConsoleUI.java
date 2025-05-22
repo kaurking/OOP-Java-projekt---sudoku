@@ -1,32 +1,43 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ConsoleUI {
 
+    // et teha terminalis värve
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String WHITE = "\u001B[37m";
+
     public void printBoard(SudokuLaud laud) {
-        System.out.println("    1 2 3   4 5 6   7 8 9");
-        System.out.println("  +-------+-------+-------+");
+        System.out.println(CYAN + "    1 2 3   4 5 6   7 8 9" + RESET);
+        System.out.println(BLUE + "  +-------+-------+-------+" + RESET);
 
         for (int rida = 0; rida < 9; rida++) {
-            System.out.print((rida + 1) + " | "); // rea number
+            System.out.print(CYAN + (rida + 1) + RESET + BLUE + " | " + RESET); // rea number
 
             for (int veerg = 0; veerg < 9; veerg++) {
                 int value = laud.getRuut(rida, veerg).getValue();
+                boolean fixed = laud.getRuut(rida, veerg).getIsFixed();
                 if (value == 0) {
-                    System.out.print(". ");
+                    System.out.print(RED + ". " + RESET);
+                } else if (fixed) {
+                    System.out.print(GREEN + value + RESET + " ");
                 } else {
-                    System.out.print(value + " ");
+                    System.out.print(RED + value + RESET + " ");
                 }
 
                 if ((veerg + 1) % 3 == 0) {
-                    System.out.print("| ");
+                    System.out.print(BLUE + "| " + RESET);
                 }
             }
 
             System.out.println(); // rea lõpp
 
             if ((rida + 1) % 3 == 0) {
-                System.out.println("  +-------+-------+-------+");
+                System.out.println(BLUE + "  +-------+-------+-------+" + RESET);
             }
         }
     }
@@ -54,7 +65,7 @@ public class ConsoleUI {
     // võtab kasutajalt terminalis uude ruutu väärtuse. x kordinaat, y kordinaat ja sisestatud number ehk nt: 2 3 5
     public int[] getKasutajaLiigutus() {
         Scanner myObj = new Scanner(System.in);
-        System.out.println("Sisesta ruudu koordinaadid ja väärtus (x y väärtus) või 'q' lõpetamiseks:");
+        System.out.println("Sisesta ruudu koordinaadid ja väärtus (x *space* y *space* väärtus) (algseid, rohelisi ei saa muuta) või 'q' lõpetamiseks:");
 
         String input = myObj.nextLine();
 
@@ -86,7 +97,7 @@ public class ConsoleUI {
         }
     }
 
-    // selleks et sõnumit väljastada kui midagi õnnestub või pekki läheb
+    // selleks et sõnumit väljastada kui midagi õnnestub või pekki läheb - pole kasutuses hetkel
     public void showMessage(String message) {
         System.out.println(message);
     }
